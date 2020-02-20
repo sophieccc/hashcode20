@@ -60,7 +60,6 @@ void quickSort(long bookOrder[], long bookScore[], long low, long high)
 } 
 
 
-
 int main() {
   long totalBooks;
   long totalLibraries;
@@ -80,8 +79,10 @@ int main() {
     bookOrder[i] = i;
   }
   
+  //sort the books by their score
   quickSort(bookOrder, bookScores, 0, totalBooks-1);
   
+  //add data into a library object and then add library to a hashmap
   for(long i = 0; i < totalLibraries; i++) {
     Library lib;
     file >> lib.numBooks;
