@@ -12,8 +12,11 @@ int main() {
     double avgScore = 3.5;
     double avgScan = 1.5;
     int libBooks[2][5] = {{4,3,2,1,1}, {5,3,2,0}};
+
+
+
+
     for(int i=0; i < 2; i++) {
-        days = 7;
         int numberOfBooks = (days-signUp[i]) * scansPerDay[i];
         int ourBooks[numberOfBooks];
         int points = 0;
@@ -29,7 +32,6 @@ int main() {
         points*=scansPerDay[i];
         points -= (avgScore * avgScan) * signUp[i];
         libs[i] = points;
-        days = days - signUp[i];
         for (int k= 0; k < numberOfBooks; k++) {
             int currentBook = ourBooks[k];
             for(int m = 0; m < 2; m++) {
