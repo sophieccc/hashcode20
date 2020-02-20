@@ -92,6 +92,8 @@ int main() {
   map<long, Library> libraryList;
   
   ifstream file("b_read_on.txt");
+  ofstream outputFile;
+  outputFile.open("output.txt");
   
   //Read in file data
   file >> totalBooks >> totalLibraries >> totalDays;
@@ -159,13 +161,13 @@ int main() {
     
   }
   
-  cout << usedLibraryCounter << endl;
+  outputFile << usedLibraryCounter << endl;
   for(long i = 0; i < usedLibraryCounter; i++) {
-    cout << usedLibraries[i] << " " << libraryList[usedLibraries[i]].scannedBooks.size() << endl;
+    outputFile << usedLibraries[i] << " " << libraryList[usedLibraries[i]].scannedBooks.size() << endl;
     for(long j = 0; j < libraryList[usedLibraries[i]].scannedBooks.size(); j++) {
-      cout << libraryList[usedLibraries[i]].scannedBooks[j] << " ";
+      outputFile << libraryList[usedLibraries[i]].scannedBooks[j] << " ";
     }
-    cout << endl;
+    outputFile << endl;
   }
   
     
