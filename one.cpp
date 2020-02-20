@@ -33,7 +33,4 @@ int main() {
             }
         }
     }
-    for(int n = 0; n < 2; n++) {
-        cout << libs[n] << "\n";
-    }
 }
