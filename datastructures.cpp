@@ -91,7 +91,7 @@ int main() {
   long totalDays;
   map<long, Library> libraryList;
   
-  ifstream file("b_read_on.txt");
+  ifstream file("a_example.txt");
   ofstream outputFile;
   outputFile.open("output.txt");
   
@@ -142,16 +142,21 @@ int main() {
     
     //find the library with the max score
     double maxScore = INT_MIN;
-    long index = 0;
+    long index = -1;
     for(long i = 0; i < totalLibraries; i++) {
       if(!libraryList[i].used && libraryList[i].score > maxScore) {
         maxScore = libraryList[i].score;
         index = i;
       }
     }
+    if(index!=-1) {
     usedLibraries.push_back(index);
     libraryList[index].used = true;
     usedLibraryCounter++;
+    }
+    else {
+      break;
+    }
     
     for(long i = 0; i < libraryList[index].scannedBooks.size(); i++) {
       bookOrder[libraryList[index].scannedBooks[i]] = -1;

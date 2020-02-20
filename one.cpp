@@ -14,8 +14,9 @@ int main() {
     int libBooks[2][5] = {{4,3,2,1,1}, {5,3,2,0}};
 
 
+while (days > 7) {
 
-
+}
     for(int i=0; i < 2; i++) {
         int numberOfBooks = (days-signUp[i]) * scansPerDay[i];
         int ourBooks[numberOfBooks];
@@ -23,16 +24,18 @@ int main() {
         for(int j= 0; j< numberOfBooks; j++) {
             ourBooks[j] = libBooks[i][j];
             points+= ourBooks[j];
-            libBooks[i][j] = 0;
+           // libBooks[i][j] = 0;
         }
-        if(points==0) {
+        /*if(points==0) {
             libs[i] = INT_MIN;
             break;
-        }
+        }*/
         points*=scansPerDay[i];
         points -= (avgScore * avgScan) * signUp[i];
         libs[i] = points;
-        for (int k= 0; k < numberOfBooks; k++) {
+        cout << libs[0] << endl;
+        cout << libs[1] << endl;
+        /*for (int k= 0; k < numberOfBooks; k++) {
             int currentBook = ourBooks[k];
             for(int m = 0; m < 2; m++) {
                 for(int n = 0; n < 5; n++) {
@@ -41,7 +44,7 @@ int main() {
                     }
                 }
             }
-        }
+        }*/
     }
     days = 7;
     for(int i = 0; i < sizeof(libs)/sizeof(*libs) && days>0; i++) {
