@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <map>
+#include <unordered_set>
 using namespace std;
 
 struct Library {
@@ -10,8 +11,32 @@ struct Library {
   long numBooks;
   long scansPerDay;
   long signUpDays;
-  vector<long> books;
+  unordered_set<long> books;
+  vector<long> scannedBooks;
+  bool used;
 };
+
+long averageScore = 0;
+long averageScansPerDay = 0;
+vector<long> usedLibraries;
+
+//calculating the score for each library 
+void calcLibraryScore(Library & l, long days, long bookScores[], long bookOrder[], long totalBooks) {
+  long maxBooks = (days - l.signUpDays) * (l.scansPerDay);
+  long count = 0;
+  double sum = 0;
+  for(int i = totalBooks - 1; i >= 0 && count < maxBooks; i--) {
+    if(l.books.find(bookOrder[i]) != l.books.end()) {
+      l.scannedBooks.push_back(bookOrder[i]);
+      count++;
+      sum += bookScores[bookOrder[i]];
+    }
+  }
+
+  sum *= l.scansPerDay;
+  sum -= averageScore * averageScansPerDay * l.signUpDays;
+  l.score = sum;
+}
 
 // A utility function to swap two elements 
 void swap(long* a, long* b) 
@@ -66,7 +91,7 @@ int main() {
   long totalDays;
   map<long, Library> libraryList;
   
-  ifstream file("a_example.txt");
+  ifstream file("b_read_on.txt");
   
   //Read in file data
   file >> totalBooks >> totalLibraries >> totalDays;
@@ -76,8 +101,12 @@ int main() {
   
   for(long i = 0; i < totalBooks; i++) {
     file >> bookScores[i];
+    averageScore += bookScores[i];
     bookOrder[i] = i;
   }
+  
+  //find average score of books
+  averageScore /= totalBooks;
   
   //sort the books by their score
   quickSort(bookOrder, bookScores, 0, totalBooks-1);
@@ -88,12 +117,55 @@ int main() {
     file >> lib.numBooks;
     file >> lib.signUpDays;
     file >> lib.scansPerDay;
+    averageScansPerDay += lib.scansPerDay;
+    lib.used = false;
     for(long i = 0; i < lib.numBooks; i++) {
       long bookId;
       file >> bookId;
-      lib.books.push_back(bookId);
+      lib.books.insert(bookId);
     }
     libraryList.insert(make_pair(i, lib));
+  }
+  
+  averageScansPerDay /= totalLibraries;
+  
+  long usedLibraryCounter;
+  //calculates max scores based on library scores
+  for(long i = 0; i < totalLibraries && totalDays > 0; i++) {
+    
+    //calculate the score for each library
+    for(long j = 0; j < totalLibraries; j++) {
+      calcLibraryScore(libraryList[j], totalDays, bookScores, bookOrder, totalBooks);
+    }
+    
+    //find the library with the max score
+    double maxScore = INT_MIN;
+    long index = 0;
+    for(long i = 0; i < totalLibraries; i++) {
+      if(!libraryList[i].used && libraryList[i].score > maxScore) {
+        maxScore = libraryList[i].score;
+        index = i;
+      }
+    }
+    usedLibraries.push_back(index);
+    libraryList[index].used = true;
+    usedLibraryCounter++;
+    
+    for(long i = 0; i < libraryList[index].scannedBooks.size(); i++) {
+      bookOrder[libraryList[index].scannedBooks[i]] = -1;
+    }
+    
+    totalDays -= libraryList[index].signUpDays;
+    
+  }
+  
+  cout << usedLibraryCounter << endl;
+  for(long i = 0; i < usedLibraryCounter; i++) {
+    cout << usedLibraries[i] << " " << libraryList[usedLibraries[i]].scannedBooks.size() << endl;
+    for(long j = 0; j < libraryList[usedLibraries[i]].scannedBooks.size(); j++) {
+      cout << libraryList[usedLibraries[i]].scannedBooks[j] << " ";
+    }
+    cout << endl;
   }
   
     
