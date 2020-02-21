@@ -123,7 +123,7 @@ int main() {
   
   ifstream file("b_read_on.txt");
   ofstream outputFile;
-  outputFile.open("output3.txt");
+  outputFile.open("output2.txt");
   
   //Read in file data
   file >> totalBooks >> totalLibraries >> totalDays;
