@@ -20,6 +20,33 @@ long averageScore = 0;
 long averageScansPerDay = 0;
 vector<long> usedLibraries;
 
+void printArray(long a[], int l) {
+    for(int i=0; i<l; i++) {
+        cout << a[i] << endl;
+    }
+    cout << endl;
+}
+
+int getMaxIndex(long bookScores[], int below, int n) {
+    int res = -1;
+    int max = -1;
+    for(int i=0; i < n; i++) {
+        if(bookScores[i] > max && bookScores[i] < below) {
+            max = bookScores[i];
+            res = i;
+        }
+    }
+    return res;
+}
+
+void sortOrder(long bookOrder[], long bookScores[], int n) {
+    int max = INT_MAX;
+    for(int i=0; i<n; i++) {
+        bookOrder[i] = getMaxIndex(bookScores, max, n);
+        max = bookScores[bookOrder[i]];
+    }
+}
+
 //calculating the score for each library 
 void calcLibraryScore(Library & l, long days, long bookScores[], long bookOrder[], long totalBooks) {
   l.scannedBooks.clear();
@@ -32,7 +59,7 @@ void calcLibraryScore(Library & l, long days, long bookScores[], long bookOrder[
   long maxBooks = (days - l.signUpDays) * (l.scansPerDay);
   long count = 0;
   double sum = 0;
-  for(int i = totalBooks-1; i >= 0 && count < maxBooks; i--) {
+  for(int i = 0; i <= totalBooks-1 && count < maxBooks; i++) {
     cout << "i: " << i << " order: " << bookOrder[i]<<" score: " << bookScores[bookOrder[i]]<< endl;
     cout << "first wooooooooo" << endl;
     if(bookScores[bookOrder[i]]!=-1) {
@@ -103,9 +130,9 @@ int main() {
   long totalDays;
   map<long, Library> libraryList;
   
-  ifstream file("a_example.txt");
+  ifstream file("b_read_on.txt");
   ofstream outputFile;
-  outputFile.open("output.txt");
+  outputFile.open("output2.txt");
   
   //Read in file data
   file >> totalBooks >> totalLibraries >> totalDays;
@@ -122,8 +149,6 @@ int main() {
   //find average score of books
   averageScore /= totalBooks;
   
-  //sort the books by their score
-  quickSort(bookOrder, bookScores, 0, totalBooks-1);
   
   //add data into a library object and then add library to a hashmap
   for(long i = 0; i < totalLibraries; i++) {
@@ -144,6 +169,12 @@ int main() {
   averageScansPerDay /= totalLibraries;
   
   long usedLibraryCounter;
+
+    //sort the books by their score
+  //quickSort(bookOrder, bookScores, 0, totalBooks-1);
+  printArray(bookOrder, totalBooks);
+  sortOrder(bookOrder, bookScores, totalBooks);
+  printArray(bookOrder, totalBooks);
   //calculates max scores based on library scores
   for(long i = 0; i < totalLibraries && totalDays > 0; i++) {
         for(int m = 0; m < totalBooks; m++) {
