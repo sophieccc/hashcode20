@@ -121,7 +121,7 @@ int main() {
   long totalDays;
   map<long, Library> libraryList;
   
-  ifstream file("a_example.txt");
+ ifstream file("pls.txt");
   ofstream outputFile;
   outputFile.open("output2.txt");
   
@@ -167,24 +167,30 @@ int main() {
   //calculates max scores based on library scores
   for(long i = 0; totalDays > 0 && i < totalLibraries; i++) {
     
-    //calculate the score for each library and find library with max score
-    double maxScore = INT_MIN;
-    long index = -1;
+    //calculate the score for each library
     int j = 0;
     for(int j = 0; j < totalLibraries; j++) {
       if( !libraryList[j].used) {
-        calcLibraryScore(libraryList[j], totalDays, bookScores, bookOrder, totalBooks);
-        if(libraryList[i].score > maxScore) {
-          maxScore = libraryList[j].score;
-          index = j;
-        }
+      calcLibraryScore(libraryList[j], totalDays, bookScores, bookOrder, totalBooks);
       }
     }
-
-    if(index!=-1) {
+    
+    //find the library with the max score
+    double maxScore = INT_MIN;
+    long index = -1;
+    for(long i = 0; i < totalLibraries; i++) {
+      if(!libraryList[i].used && libraryList[i].score > maxScore) {
+        maxScore = libraryList[i].score;
+        index = i;
+      }
+    }
+    if(index!=-1 && libraryList[index].score>0) {
     usedLibraries.push_back(index);
     libraryList[index].used = true;
     usedLibraryCounter++;
+    }
+    else {
+      break;
     }
     
     Library current = libraryList[index];
@@ -206,4 +212,5 @@ int main() {
     outputFile << endl;
   }
   
+    
 }
