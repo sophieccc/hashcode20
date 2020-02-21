@@ -91,7 +91,7 @@ int main() {
   long totalDays;
   map<long, Library> libraryList;
   
-  ifstream file("a_example.txt");
+  ifstream file("b_read_on.txt");
   ofstream outputFile;
   outputFile.open("output.txt");
   
