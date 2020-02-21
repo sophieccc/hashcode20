@@ -56,13 +56,13 @@ void calcLibraryScore(Library & l, long days, long bookScores[], long bookOrder[
   for(int i = 0; i <= totalBooks-1 && count < maxBooks; i++) {
     if(bookScores[bookOrder[i]]!=-1) {
       if (find(l.books.begin(), l.books.end(), bookOrder[i])!=l.books.end()){
-      l.scannedBooks.push_back(bookOrder[i]);
+      long temp = bookOrder[i];
+      l.scannedBooks.push_back(temp);
       count++;
       sum += bookScores[bookOrder[i]];
       }
     }
   }
-
   sum *= l.scansPerDay;
   sum -= averageScore * averageScansPerDay * l.signUpDays;
   l.score = sum;
@@ -121,7 +121,7 @@ int main() {
   long totalDays;
   map<long, Library> libraryList;
   
- ifstream file("pls.txt");
+  ifstream file("pls.txt");
   ofstream outputFile;
   outputFile.open("output2.txt");
   
@@ -161,7 +161,7 @@ int main() {
   
   long usedLibraryCounter;
 
-    //sort the books by their score
+  //sort the books by their score
   //quickSort(bookOrder, bookScores, 0, totalBooks-1);
   sortOrder(bookOrder, bookScores, totalBooks);
   //calculates max scores based on library scores
@@ -184,7 +184,7 @@ int main() {
         index = i;
       }
     }
-    if(index!=-1 && libraryList[index].score>0) {
+    if(index!=-1) {
     usedLibraries.push_back(index);
     libraryList[index].used = true;
     usedLibraryCounter++;
