@@ -11,7 +11,7 @@ struct Library {
   long numBooks;
   long scansPerDay;
   long signUpDays;
-  unordered_set<long> books;
+  vector<long> books;
   vector<long> scannedBooks;
   bool used;
 };
@@ -22,14 +22,26 @@ vector<long> usedLibraries;
 
 //calculating the score for each library 
 void calcLibraryScore(Library & l, long days, long bookScores[], long bookOrder[], long totalBooks) {
+  l.scannedBooks.clear();
+  cout << "printing books" << endl;
+  for(int y = 0; y < l.books.size(); y++) {
+    cout << l.books[y] << endl;
+  }
+  cout << "okay done" << endl;
+  cout << "size: " << l.scannedBooks.size() << endl;;
   long maxBooks = (days - l.signUpDays) * (l.scansPerDay);
   long count = 0;
   double sum = 0;
-  for(int i = totalBooks - 1; i >= 0 && count < maxBooks; i--) {
-    if(l.books.find(bookOrder[i]) != l.books.end()) {
+  for(int i = totalBooks-1; i >= 0 && count < maxBooks; i--) {
+    cout << "i: " << i << " order: " << bookOrder[i]<<" score: " << bookScores[bookOrder[i]]<< endl;
+    cout << "first wooooooooo" << endl;
+    if(bookScores[bookOrder[i]]!=-1) {
+      if (find(l.books.begin(), l.books.end(), bookOrder[i])!=l.books.end()){
+      cout << "second wooooooooo" << endl;
       l.scannedBooks.push_back(bookOrder[i]);
       count++;
       sum += bookScores[bookOrder[i]];
+      }
     }
   }
 
@@ -124,7 +136,7 @@ int main() {
     for(long i = 0; i < lib.numBooks; i++) {
       long bookId;
       file >> bookId;
-      lib.books.insert(bookId);
+      lib.books.push_back(bookId);
     }
     libraryList.insert(make_pair(i, lib));
   }
@@ -134,10 +146,24 @@ int main() {
   long usedLibraryCounter;
   //calculates max scores based on library scores
   for(long i = 0; i < totalLibraries && totalDays > 0; i++) {
+        for(int m = 0; m < totalBooks; m++) {
+      cout << "order: " << bookOrder[m] << "score: " << bookScores[m] << " index: " << m << endl;
+    }
+    cout << "uses" << endl;
+    cout << libraryList[0]. used << endl;
+    cout << libraryList[1]. used << endl;
+    cout << endl;
     
     //calculate the score for each library
-    for(long j = 0; j < totalLibraries; j++) {
+    cout << "plssss why 1" << endl;
+    cout << "but WHAT " << libraryList[1].used <<  endl;
+    cout << "but WHAT pls" << totalLibraries<<  endl;
+    int j = 0;
+    for(int j = 0; j < totalLibraries; j++) {
+      if( !libraryList[j].used) {
+      cout << "plssss why 2" << endl;
       calcLibraryScore(libraryList[j], totalDays, bookScores, bookOrder, totalBooks);
+      }
     }
     
     //find the library with the max score
@@ -154,15 +180,17 @@ int main() {
     libraryList[index].used = true;
     usedLibraryCounter++;
     }
-    else {
-      break;
+    
+    Library current = libraryList[index];
+    for(long i = 0; i < current.scannedBooks.size(); i++) {
+      cout << "hi" << endl;
+      int index = current.scannedBooks[i];
+      cout << "index: " << index << endl;
+      bookScores[index] = -1;
+      cout << "book index: " << bookOrder[index] << endl;
     }
     
-    for(long i = 0; i < libraryList[index].scannedBooks.size(); i++) {
-      bookOrder[libraryList[index].scannedBooks[i]] = -1;
-    }
-    
-    totalDays -= libraryList[index].signUpDays;
+    totalDays -= current.signUpDays;
     
   }
   
