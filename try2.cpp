@@ -160,15 +160,6 @@ int main() {
   averageScansPerDay /= totalLibraries;
   
   long usedLibraryCounter;
-
-  //sort the books by their score
-  //quickSort(bookOrder, bookScores, 0, totalBooks-1);
-  /*printArray(bookOrder, totalBooks);
-    cout << "first try done" << endl;
-  sortOrder(bookOrder, bookScores, totalBooks);
-  printArray(bookOrder, totalBooks);
-    cout << "second try done" << endl;*/
-  //calculates max scores based on library scores
   
 for(int h = 0; h < totalBooks; h++) {
     int count = 0;
