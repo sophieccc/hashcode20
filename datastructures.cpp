@@ -121,7 +121,7 @@ int main() {
   long totalDays;
   map<long, Library> libraryList;
   
-  ifstream file("pls.txt");
+  ifstream file("b_read_on.txt");
   ofstream outputFile;
   outputFile.open("output2.txt");
   
@@ -163,7 +163,11 @@ int main() {
 
   //sort the books by their score
   //quickSort(bookOrder, bookScores, 0, totalBooks-1);
+  printArray(bookOrder, totalBooks);
+    cout << "first try done" << endl;
   sortOrder(bookOrder, bookScores, totalBooks);
+  printArray(bookOrder, totalBooks);
+    cout << "second try done" << endl;
   //calculates max scores based on library scores
   for(long i = 0; totalDays > 0 && i < totalLibraries; i++) {
     
@@ -178,12 +182,14 @@ int main() {
     //find the library with the max score
     double maxScore = INT_MIN;
     long index = -1;
-    for(long i = 0; i < totalLibraries; i++) {
-      if(!libraryList[i].used && libraryList[i].score > maxScore) {
-        maxScore = libraryList[i].score;
-        index = i;
+    for(long k = 0; k < totalLibraries; k++) {
+      if(!libraryList[k].used && libraryList[k].score > maxScore) {
+        maxScore = libraryList[k].score;
+        index = k;
       }
     }
+    cout << "try " << i << endl;
+    cout << "biggest score is  " << maxScore << " from lib " << index << endl;
     if(index!=-1) {
     usedLibraries.push_back(index);
     libraryList[index].used = true;
